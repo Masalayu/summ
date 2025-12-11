@@ -1,0 +1,13 @@
+{
+  "name": "docsumm",
+  "version": "1.0.0",
+  "description": "Document Summarizer",
+  "main": "summarizer.js",
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "mammoth": "^1.6.0",
+    "openai": "^4.104.0",
+    "pdf-parse": "^1.1.1"
+  }
+}
