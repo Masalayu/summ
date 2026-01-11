@@ -17,13 +17,17 @@ Untuk menjalankan aplikasi ini di environment lokal, pastikan spesifikasi beriku
 - RAM: Minimal 4 GB (direkomendasikan 8 GB untuk model AI yang lebih besar).
 - Storage: Minimal 500 MB kosong untuk instalasi dan library.
 
-### Software:
-- **Sistem Operasi:** Windows (karena Laragon khusus Windows; untuk OS lain, adaptasi manual diperlukan).
-- **Laragon:** Versi terbaru (download dari [laragon.org](https://laragon.org)). Pilih edisi Full untuk inklusi PHP dan server.
-- **Python:** Versi 3.10+ (instal dari [python.org](https://python.org) jika belum ada di Laragon).
-- **PHP:** Versi 7.4+ (sudah termasuk di Laragon).
-- **Library Python:** transformers, torch, PyPDF2, python-docx, sentencepiece (instal via pip).
-- **Browser:** Chrome, Firefox, atau Edge untuk mengakses web lokal.
+Software (Prasyarat Perangkat Lunak):
+Sistem Operasi: Windows (direkomendasikan untuk Laragon; pengguna Mac/Linux dapat menggunakan Docker atau stack Node.js mandiri).
+Laragon: Versi terbaru (Full Edition). Digunakan sebagai pengelola server Apache/Nginx dan database lokal.
+Node.js: Versi 18.x atau lebih tinggi (LTS direkomendasikan). Instal melalui nodejs.org. Ini adalah pengganti Python untuk menjalankan script JavaScript di terminal.
+PHP: Versi 7.4 ke atas (sudah tersedia di Laragon). Tetap diperlukan jika Anda menggunakan PHP sebagai bridge atau untuk halaman web utama.
+Library & Package (npm): Anda perlu menginstal package berikut melalui terminal:
+@xenova/transformers: Untuk menjalankan model AI (pengganti library transformers Python).
+pdf-parse: Untuk membaca file PDF (pengganti PyPDF2).
+mammoth: Untuk membaca file Word/DOCX (pengganti python-docx).
+fs-extra: Untuk manajemen file system yang lebih mudah.
+Browser: Google Chrome, Firefox, atau Microsoft Edge versi terbaru.
 
 **Catatan:** Aplikasi ini berjalan sepenuhnya lokal tanpa internet setelah setup, kecuali jika Anda modifikasi untuk API eksternal.
 
@@ -97,40 +101,29 @@ Jika terjadi kendala saat menjalankan aplikasi, silakan cek solusi berikut ini:
 
 1. Error "Node or npm not found"
 Pastikan Node.js sudah terinstal dan masuk ke dalam sistem PATH.
-
 Uji di Terminal Laragon: Ketik node -v dan npm -v.
-
 Jika belum terdeteksi, coba Restart Laragon atau cek instalasi Node.js Anda.
 
 2. Error Library JavaScript (misal "Cannot find module")
 Pastikan semua dependensi sudah terinstal. Jalankan perintah berikut di folder proyek melalui Terminal Laragon:
-
 npm install
-
 Jika spesifik satu modul hilang (misal: @xenova/transformers), instal manual: npm install @xenova/transformers.
 
 3. File Upload Gagal
 Cek izin akses (permission) folder uploads/ (pastikan statusnya writable).
-
 Jika menggunakan PHP sebagai pemroses upload di Laragon, periksa batas ukuran file di php.ini (Laragon > Menu > PHP > php.ini). Cari bagian upload_max_filesize.
 
 4. Summarization Lambat/Error
 Model AI (seperti Transformers.js) membutuhkan konsumsi RAM yang cukup. Tutup aplikasi berat lainnya.
-
 Jika menggunakan library berbasis WebAssembly atau GPU, pastikan driver browser/sistem terupdate.
-
 Test script secara manual: Jalankan langsung di terminal untuk melihat error detail: node summarizer.js path/to/file.pdf
 
 5. Halaman Web Tidak Muncul
 Pastikan servis di Laragon sudah berjalan (Start All).
-
 Jika Anda menggunakan framework seperti React/Vue, pastikan server development (npm run dev) sudah aktif.
-
 Coba bersihkan Cache Browser atau gunakan Incognito Mode.
-
 6. Error JSON Decode
 Pastikan output dari script JavaScript memberikan format JSON yang valid.
-
 Gunakan console.log() di sisi Node.js untuk menelusuri data sebelum dikirim ke frontend atau PHP.
 
 [!TIP] Tips Tambahan: Jika masalah berlanjut, selalu periksa Error Log di Laragon (Menu > Log) atau buka Developer Tools di browser (F12 > Console) untuk melihat pesan kesalahan yang lebih spesifik.
@@ -141,7 +134,7 @@ Untuk meningkatkan aplikasi:
 - **Frontend Lebih Baik:** Integrasikan Bootstrap atau Laravel (instal via Composer di Laragon).
 - **API Eksternal:** Ganti Python dengan OpenAI API (panggil via cURL di PHP) untuk summarization lebih cepat (butuh API key).
 - **Optimasi:** Tambah progress bar JS atau proses async.
-- **Deployment ke Produksi:** Pindah ke hosting seperti Heroku. Pisah Python (Flask API) dan PHP.
+- **Deployment ke Produksi:** Pindah ke hosting seperti Heroku. Pisah Javascript (Flask API) dan PHP.
 
 ## Disclaimer
 - Aplikasi ini untuk tujuan edukasi. Ringkasan AI mungkin tidak 100% akurat; selalu verifikasi manual.
