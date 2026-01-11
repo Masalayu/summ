@@ -1,7 +1,7 @@
 # Manual Book: Aplikasi Document Summarizer Berbasis Web
 
 ## Pendahuluan
-Selamat datang di Manual Book untuk Aplikasi Document Summarizer! Aplikasi ini adalah sistem cerdas sederhana berbasis web yang memungkinkan pengguna untuk mengupload dokumen (PDF, TXT, atau DOCX), mengekstrak teksnya, dan menghasilkan ringkasan otomatis menggunakan teknologi AI/ML. Aplikasi ini dibangun menggunakan PHP untuk antarmuka web dan Python untuk proses summarization, dengan environment lokal menggunakan Laragon.
+Selamat datang di Manual Book untuk Aplikasi Document Summarizer! Aplikasi ini adalah sistem cerdas sederhana berbasis web yang memungkinkan pengguna untuk mengupload dokumen (PDF, TXT, atau DOCX), mengekstrak teksnya, dan menghasilkan ringkasan otomatis menggunakan teknologi AI/ML. Aplikasi ini dibangun menggunakan PHP untuk antarmuka web dan JavaScript untuk proses summarization, dengan environment lokal menggunakan Laragon.
 
 **Tujuan Aplikasi:** Membantu pengguna merangkum dokumen panjang secara cepat, cocok untuk mahasiswa, peneliti, atau profesional yang sering berurusan dengan teks berukuran besar.
 
@@ -55,7 +55,7 @@ Ikuti langkah-langkah berikut untuk menginstal dan menyiapkan aplikasi.
 1. Di Laragon, klik "Quick App" > "Blank" atau buat folder manual di direktori `www/` Laragon (misal: `C:\laragon\www\document-summarizer`).
 2. Buat file-file berikut di folder project:
    - `index.php`: Kode PHP untuk UI dan backend.
-   - `summarizer.py`: Kode Python untuk summarization.
+   - `summarizer.js`: Kode JavaScript untuk summarization.
 3. Salin kode dari panduan sebelumnya ke file-file tersebut.
 4. Buat subfolder `uploads/` di folder project untuk menyimpan file sementara.
 
@@ -79,7 +79,7 @@ Aplikasi ini mudah digunakan. Berikut panduan langkah demi langkah.
 
 3. **Proses Summarization:**
    - Aplikasi akan mengekstrak teks dari dokumen.
-   - Python akan merangkum teks menggunakan model AI (default: BART-large-CNN).
+   - JavaScript akan merangkum teks menggunakan model AI (default: BART-large-CNN).
    - Tunggu 5-30 detik tergantung ukuran dokumen (untuk file besar, bisa lebih lama).
 
 4. **Lihat Hasil:**
@@ -92,33 +92,48 @@ Aplikasi ini mudah digunakan. Berikut panduan langkah demi langkah.
 - **Panjang Ringkasan:** Sesuaikan variabel `max_length` di Python untuk mengontrol panjang (misal 200 kata).
 - **Multi-Dokumen:** Untuk saat ini, satu file per sesi. Tambah fitur batch di pengembangan lanjutan.
 
-## Troubleshooting (Pemecahan Masalah)
-Jika ada masalah, cek solusi berikut:
+Troubleshooting (Pemecahan Masalah)
+Jika terjadi kendala saat menjalankan aplikasi, silakan cek solusi berikut ini:
 
-1. **Error "Python not found":**
-   - Pastikan Python di PATH. Test di Terminal: `python --version`.
-   - Restart Laragon.
+1. Error "Node or npm not found"
+Pastikan Node.js sudah terinstal dan masuk ke dalam sistem PATH.
 
-2. **Error Library Python (misal "No module named transformers"):**
-   - Instal ulang library via pip di Terminal Laragon.
+Uji di Terminal Laragon: Ketik node -v dan npm -v.
 
-3. **File Upload Gagal:**
-   - Cek permission folder `uploads/` (harus writable).
-   - Periksa ukuran file di php.ini (Laragon > Menu > PHP > php.ini).
+Jika belum terdeteksi, coba Restart Laragon atau cek instalasi Node.js Anda.
 
-4. **Summarization Lambat/Error:**
-   - Model AI butuh RAM cukup. Tutup app lain.
-   - Jika error torch (GPU), jalankan di CPU saja (default).
-   - Test script Python manual: Di Terminal, `python summarizer.py path/to/file.pdf`.
+2. Error Library JavaScript (misal "Cannot find module")
+Pastikan semua dependensi sudah terinstal. Jalankan perintah berikut di folder proyek melalui Terminal Laragon:
 
-5. **Halaman Web Tidak Muncul:**
-   - Cek Laragon berjalan (Start All).
-   - Clear cache browser.
+npm install
 
-6. **Error JSON Decode:**
-   - Pastikan output Python valid JSON. Test script secara terpisah.
+Jika spesifik satu modul hilang (misal: @xenova/transformers), instal manual: npm install @xenova/transformers.
 
-Jika masalah berlanjut, cek log error di Laragon (Menu > Log) atau console browser (F12 > Console).
+3. File Upload Gagal
+Cek izin akses (permission) folder uploads/ (pastikan statusnya writable).
+
+Jika menggunakan PHP sebagai pemroses upload di Laragon, periksa batas ukuran file di php.ini (Laragon > Menu > PHP > php.ini). Cari bagian upload_max_filesize.
+
+4. Summarization Lambat/Error
+Model AI (seperti Transformers.js) membutuhkan konsumsi RAM yang cukup. Tutup aplikasi berat lainnya.
+
+Jika menggunakan library berbasis WebAssembly atau GPU, pastikan driver browser/sistem terupdate.
+
+Test script secara manual: Jalankan langsung di terminal untuk melihat error detail: node summarizer.js path/to/file.pdf
+
+5. Halaman Web Tidak Muncul
+Pastikan servis di Laragon sudah berjalan (Start All).
+
+Jika Anda menggunakan framework seperti React/Vue, pastikan server development (npm run dev) sudah aktif.
+
+Coba bersihkan Cache Browser atau gunakan Incognito Mode.
+
+6. Error JSON Decode
+Pastikan output dari script JavaScript memberikan format JSON yang valid.
+
+Gunakan console.log() di sisi Node.js untuk menelusuri data sebelum dikirim ke frontend atau PHP.
+
+[!TIP] Tips Tambahan: Jika masalah berlanjut, selalu periksa Error Log di Laragon (Menu > Log) atau buka Developer Tools di browser (F12 > Console) untuk melihat pesan kesalahan yang lebih spesifik.
 
 ## Pengembangan Lanjutan
 Untuk meningkatkan aplikasi:
